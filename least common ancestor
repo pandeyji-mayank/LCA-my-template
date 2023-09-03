@@ -1,0 +1,53 @@
+void dfs(int node, vector<vector<int>> &adj, vector<vector<int>> &parent, int lvl, vector<int> &level)
+{
+     level[node] = lvl;
+     for (auto &x : adj[node])
+     {
+          parent[x][0] = node;
+          dfs(x, adj, parent, lvl + 1, level);
+     }
+}
+// In this we have to pass the adjacency list adj, parent 2d vector and level, "remember you need to fix the size of everyting before" ans node is the vertex of the tree
+void storetheparents(vector<vector<int>> &adj, vector<vector<int>> &parent, vector<int> &level, int node)
+{
+     dfs(node, adj, parent, 0, level);
+     for (int i = 1; i < parent[0].size(); i++)
+     {
+          for (int node = 1; node < parent.size(); node++)
+          {
+               if (parent[node][i - 1] != -1)
+                    parent[node][i] = parent[parent[node][i - 1]][i - 1];
+          }
+     }
+}
+// this is to find the least common ancestor of a and b, make sure to calculate parent and level before 
+int lca(int a, int b, vector<vector<int>> &parent, vector<int> &level)
+{
+     if (level[a] != level[b])
+     {
+          if (level[a] > level[b])
+               swap(a, b);
+          int t = level[b] - level[a];
+          for (int i = 0; i < 25; i++)
+          {
+               if ((1LL << i) & t)
+               {
+                    b = parent[b][i];
+               }
+          }
+     }
+     // cout<<a<<" "<<b<<endl;
+     if (a == b)
+     {
+          return a;
+     }
+     for (int i = parent[0].size() - 1; i >= 0; i--)
+     {
+          if (parent[a][i] != parent[b][i])
+          {
+               a = parent[a][i];
+               b = parent[b][i];
+          }
+     }
+     return parent[a][0];
+}
