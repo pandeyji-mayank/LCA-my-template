@@ -1,16 +1,18 @@
-void dfs(int node, vector<vector<int>> &adj, vector<vector<int>> &parent, int lvl, vector<int> &level)
+void dfs(int node, int parent, vector<vector<int>> &adj, vector<vector<int>> &parent, int lvl, vector<int> &level)
 {
      level[node] = lvl;
      for (auto &x : adj[node])
      {
-          parent[x][0] = node;
-          dfs(x, adj, parent, lvl + 1, level);
+          if(x!=parent){
+               parent[x][0] = node;
+               dfs(x,node, adj, parent, lvl + 1, level);
+          }
      }
 }
 // In this we have to pass the adjacency list adj, parent 2d vector and level, "remember you need to fix the size of everyting before" ans node is the vertex of the tree
 void storetheparents(vector<vector<int>> &adj, vector<vector<int>> &parent, vector<int> &level, int node)
 {
-     dfs(node, adj, parent, 0, level);
+     dfs(node,-1, adj, parent, 0, level);
      for (int i = 1; i < parent[0].size(); i++)
      {
           for (int node = 1; node < parent.size(); node++)
