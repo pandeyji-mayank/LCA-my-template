@@ -1,9 +1,9 @@
-void dfs(int node, int parent, vector<vector<int>> &adj, vector<vector<int>> &parent, int lvl, vector<int> &level)
+void dfs(int node, int par, vector<vector<int>> &adj, vector<vector<int>> &parent, int lvl, vector<int> &level)
 {
      level[node] = lvl;
      for (auto &x : adj[node])
      {
-          if(x!=parent){
+          if(x!=par){
                parent[x][0] = node;
                dfs(x,node, adj, parent, lvl + 1, level);
           }
